@@ -22,20 +22,20 @@ namespace GuessNumber2._0 {
                     if (_cand[i])
                         return i;
             }
-         ///////////////////
+         
          // 悲观假设：
-         //     假设无论猜什么排列，电脑总是能聪明地返回结果，
+         //     假设无论猜什么排列，电脑总是能正确地返回结果，
          //     使得依据返回结果能进一步排除掉的可行排列数目最少（即剩余的可行排列数目最多）
          // 贪婪算法：
          //     从可行排列中选择下一次猜测的排列；
          //     在悲观假设总是成立的条件下，使得每次排除掉的可行排列数目最多（即剩余的可行排列数目最少），即求最好的最坏情况；
-         ///////////////////
+         //就是想办法在下一回合排除掉更多的选择
 
             int[] res_count = new int[MATCH + 1];
             int min_max = M + 1;
             int min_max_index = 0;
             for(int i = 0; i < M; i++) {
-                //对于每一个可行排列Ri
+                //对于每一个可行排列
                 if (_cand[i]) {
                     /*
                     下一次猜测排列Ri的时候，裁判将会返回一个结果
@@ -47,16 +47,15 @@ namespace GuessNumber2._0 {
                     for (int j = 0; j <= MATCH; j++)
                         res_count[j] = 0;
                     for (int j = 0; j < M; j++) {
-                        if (_cand[j]) {
-                            res_count[(int)table[i, j]]++;
-                        }
-                            
+                        if (_cand[j]) {  //如果该项和剩余的可行项进行比较
+                            res_count[table[i, j]]++;  //测量分散程度或者叫分布程度
+                        }    
                     }
                     for (int j = 0; j <= MATCH; j++)
                         if (res_count[j] > cur_max)
                             cur_max = res_count[j];
                     //如果cur_max小于全局min_max，则更新min_max，并记录下当前排列的序号，这样能找到最好最坏情况
-                    if (cur_max < min_max) {
+                    if (cur_max < min_max) {  //找到一个分布程度最大的项
                         min_max = cur_max;
                         min_max_index = i;
                     }

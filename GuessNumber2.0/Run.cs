@@ -53,7 +53,7 @@ namespace GuessNumber2._0 {
             return (char)(a * 10 + b);
         }
 
-        // 打表，初始化各个排列间的关系矩阵，耗时较多，不过为了以后查询更快点，这个初始化函数放在了最初的页面
+        // 打表，初始化各个排列间的关系矩阵，耗时较多(有待改进)，不过为了以后查询更快点，这个初始化函数放在了最初的页面
         public static void init_table () {
             for (int i = 0; i < M; i++)
                 for (int j = 0; j <= i; j++) {
@@ -65,6 +65,10 @@ namespace GuessNumber2._0 {
                     }
                     table[i, j] = table[j, i] = judge(temp1, temp2);
                 }
+        }
+
+        public static int get_arrange (int a, int b) {
+            return arrange[a, b];
         }
 
         //返回猜测信息
@@ -104,18 +108,12 @@ namespace GuessNumber2._0 {
             return strB.ToString();
         }
 
-        public static int get_arrange(int a, int b) {
-            return arrange[a, b];
-        }
-
-        // 玩一次游戏，返回猜测次数
+        // 一次连续猜测，返回猜测次数
         public static int play (Player p, Judgment j, int change) {
             int time = 0;
             while (true) {
                 int guess = p.getNextGuess();
                 char result = j.doJudge(guess);
-                //if (change == 1)
-                    //print_guess_info(guess, result);
                 time++;
                 if (result == (char)MATCH)
                     break;
@@ -128,7 +126,6 @@ namespace GuessNumber2._0 {
         public static string contest (Player p, Judgment j, int change, string PlayerNumber, int PCguess) {
             int timePC = 0;
             int timeUser = 0;
-            int which = 0;
 
             int num = int.Parse(PlayerNumber);
             int[] test = new int[4];
@@ -139,31 +136,17 @@ namespace GuessNumber2._0 {
             char re = j.doJudge2(test);
             timeUser++;
             
-
             int guess = PCguess;
             char result = j.doJudge(guess);
             timePC++;
             p.setGuessResult(guess, result);
 
-            if (re == (char)MATCH && result != (char)MATCH) {
-                which = 1;
-            }
-
-            else if (re != (char)MATCH && result == (char)MATCH) {
-                which = 2;
-            }
-            else {
-                which = 3;
-            }
-            
-            
-
-            if (which == 2)
-                return "T,PC," + timePC + "," + re + "," + result;
-            else if (which == 1)
+            if (re == (char)MATCH && result != (char)MATCH)
                 return "T,User," + timeUser + "," + re + "," + result;
-            else if(which == 3)
-                return "T,Both," + timeUser + "," + re + "," + result;
+            else if (re != (char)MATCH && result == (char)MATCH)
+                return "T,PC," + timePC + "," + re + "," + result;
+            else if(re == (char)MATCH && result == (char)MATCH)
+                return "T,Both," + timeUser + "," + re + "," + result;      
             else
                 return "F,," + timeUser + "," + re + "," + result;
         }

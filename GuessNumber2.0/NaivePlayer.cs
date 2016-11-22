@@ -14,7 +14,7 @@ namespace GuessNumber2._0 {
             _cand_count = M;
         }
         public int getNextGuess(){
-            // 第一次猜测总是使用第一个排列
+            // 第一次猜测总是使用第一个可行的排列
             if(_cand_count == M)//排列次数用完结束
                 return 0;
             // 返回遇到的第一个可行排列

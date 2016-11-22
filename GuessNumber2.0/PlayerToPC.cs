@@ -18,7 +18,7 @@ namespace GuessNumber2._0 {
         private int times = 0;
         public PlayerToPC (string choice) {
             InitializeComponent();
-            //互相比赛模式
+
             Hashtable hashtable = new Hashtable();
             Random rm = new Random();
             int RmNum = 4;
@@ -51,9 +51,7 @@ namespace GuessNumber2._0 {
                 int guess = pp2.getNextGuess();
                 tb2.Text = Run.get_info(guess);
                 string strPC = tb2.Text;
-                //tb22.Text = Run.get_guess_info(guess, )
                 ((HonestJudgment)jp2).setArrange(test4);
-
 
                 string str = Run.contest(pp2, jp2, 1, strPlayer, guess);
                 times++;
@@ -72,11 +70,12 @@ namespace GuessNumber2._0 {
                         tb11.Text += "第" + times.ToString() + "次：" + Run.get_guess_info_player(strPlayer, char.Parse(sArray[3])) + "\r\n";
                         tb22.Text += "第" + times.ToString() + "次：" + Run.get_guess_info(guess, char.Parse(sArray[4])) + "\r\n";
                     }
-                    else
+                    else if(sArray[1] == "Both") {
                         MessageBox.Show("Both Win!!!");
                         MessageBox.Show("第" + times.ToString() + "次：" + strPlayer);
                         tb11.Text += "第" + times.ToString() + "次：" + Run.get_guess_info_player(strPlayer, char.Parse(sArray[3])) + "\r\n";
                         tb22.Text += "第" + times.ToString() + "次：" + Run.get_guess_info(guess, char.Parse(sArray[4])) + "\r\n";
+                    }  
                 }
                 else {
                     MessageBox.Show("都错了");
@@ -84,6 +83,7 @@ namespace GuessNumber2._0 {
                     tb22.Text += "第" + times.ToString() + "次：" + Run.get_guess_info(guess, char.Parse(sArray[4])) + "\r\n";
                 }
                 tb1.Text = "";
+                tb1.Focus();
             }
             else if(tb1.Text == "" && tb1.Text.Length == 4) {
                 MessageBox.Show("输入不可为空！！！");

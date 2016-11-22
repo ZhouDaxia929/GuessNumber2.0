@@ -47,6 +47,7 @@
             this.tb2.Location = new System.Drawing.Point(617, 84);
             this.tb2.Margin = new System.Windows.Forms.Padding(5);
             this.tb2.Name = "tb2";
+            this.tb2.ReadOnly = true;
             this.tb2.Size = new System.Drawing.Size(164, 29);
             this.tb2.TabIndex = 1;
             // 
